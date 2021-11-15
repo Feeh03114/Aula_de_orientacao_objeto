@@ -1,7 +1,10 @@
-public class Pessoa {
+public class Comida {
     private double peso;
 
-    public Pessoa(double peso) {
+    public Comida() {
+    }
+
+    public Comida(double peso) {
         this.peso = peso;
     }
 
@@ -11,9 +14,5 @@ public class Pessoa {
 
     public void setPeso(double peso) {
         this.peso = peso;
-    }
-
-    public void comer(Comida comida) {
-        this.peso += comida.getPeso() / 1000;
     }
 }
