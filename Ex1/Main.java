@@ -1,103 +1,73 @@
-package application;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
-
-import entites2.Aluno;
-import entities.Curso;
 
 public class Main {
 
-	public static void main(String[] args) {
-		Locale.setDefault(Locale.US);
-		Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
 
-		List<Curso> list = new ArrayList<Curso>();
+        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
 
-		// ArrayList<Curso> list = new ArrayList<Curso>();
+        while (true) {
 
-		List<Aluno> list1 = new ArrayList<Aluno>();
+            System.out.print("\nMenu: \n1 – Inserir Funcionário \n2 – Exibir Funcionário \n3 – Sair \n");
+            int menu = sc.nextInt();
+            switch (menu) {
+            case 1:
+                while (true) {
+                    System.out.print("Tipo do Funcionário: \n1 – Horista \n2 – Mensalista \n");
+                    int tipo = sc.nextInt();
+                    if (tipo == 1) {
+                        boolean horista = true;
+                        inserirFuncionario(sc, funcionarios, horista);
+                        break;
+                    } else if (tipo == 2) {
+                        boolean horista = false;
+                        inserirFuncionario(sc, funcionarios, horista);
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+                break;
+            case 2:
+                funcionarios.forEach(f -> System.out.println(f));
+                break;
+            case 3:
+                System.exit(0);
+            }
+        }
+    }
 
-		Curso crs = new Curso();
-		Aluno aln = new Aluno();
+    private static void inserirFuncionario(Scanner sc, ArrayList<Funcionario> funcionarios, boolean horista) {
+        System.out.print("Número do cracha: ");
+        int numeroCracha = sc.nextInt();
 
-		while (true) {
+        System.out.print("Nome: ");
+        String nome = sc.next();
 
-			System.out.println("===MENU===");
-			System.out.println("1-Criar Curso \n2-Criar Aluno \n3-Remover Aluno"
-					+ "\n4-Mostrar Todos os Cursos \n5-Mostrar Alunos do Cruso" + "\n6-Sair");
-			int escolha = sc.nextInt();
+        System.out.print("Setor: ");
+        String setor = sc.next();
 
-			switch (escolha) {
-				case 1:
-					System.out.println("Deseja criar quantos cursos: ");
-					int C = sc.nextInt();
+        System.out.print("Função: ");
+        String funcao = sc.next();
 
-					for (int i = 0; i < C; i++) {
-						System.out.println("Criando cruso");
-						System.out.println("Codigo do curso: ");
-						Integer codigo = sc.nextInt();
-						System.out.println("Nome: ");
-						sc.nextLine();
-						String nomeCurso = sc.nextLine();
-						System.out.println("Carga hoararia: ");
-						Integer cargaHoraria = sc.nextInt();
+        if (horista == true) {
+            System.out.print("Quantidade de horas: ");
+            int qtdhoras = sc.nextInt();
 
-						crs = new Curso(codigo, nomeCurso, cargaHoraria, (ArrayList<Aluno>) list1);
+            System.out.print("Valor da Hora: ");
+            double valorHora = sc.nextDouble();
 
-						list.add(crs);
-					}
+            FuncionarioHorista funcionario = new FuncionarioHorista(numeroCracha, nome, setor, funcao, qtdhoras,
+                    valorHora);
+            funcionarios.add(funcionario);
+        } else {
+            System.out.print("Salário: ");
+            double salario = sc.nextDouble();
 
-					break;
-				case 2:
-					System.out.println("Deseja adicionar quantos alunos: ");
-					int N = sc.nextInt();
-					for (int i = 0; i < N; i++) {
-						System.out.println("Aluno #" + (i + 1) + " :");
-						System.out.println("Nome: ");
-						sc.nextLine();
-						String nome = sc.nextLine();
-						System.out.println("RA do aluno: ");
-						String ra = sc.next();
-						System.out.println("Escolha o curso: ");
-						String curso = sc.next();
-
-						aln = new Aluno(nome, ra);
-
-						list1.add(aln);
-					}
-					break;
-				case 3:
-					System.out.println("Remover aluno: ");
-					System.out.println("Insira o RA do aluno que deseja remover: ");
-					int nra = sc.nextInt();
-
-					boolean econtrado = false;
-					for (int i = 0; i < list1.size(); i++) {
-						if (list1.get(i).getRa().equals(nra)) {
-							list1.remove(i);
-							econtrado = true;
-						}
-					}
-					if (!econtrado) {
-						System.out.println("Aluno não encontrado");
-					}
-					break;
-				case 4:
-					System.out.println("Mostrando todos os cursos");
-					System.out.println(crs.imprimirCurso());
-					break;
-				case 5:
-					System.out.println("Mostrando todos os alunos");
-					System.out.println(crs.imprimirCursoCompleto());
-					break;
-				case 6:
-					System.out.println("Encerrando o programa");
-					sc.close();
-					return;
-			}
-		}
-	}
+            FuncionarioMensalista funcionario = new FuncionarioMensalista(numeroCracha, nome, setor, funcao, salario);
+            funcionarios.add(funcionario);
+        }
+    }
 }
